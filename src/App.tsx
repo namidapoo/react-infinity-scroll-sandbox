@@ -81,76 +81,79 @@ export function App() {
 					rowVirtualizerを併用してリストの最下部のローダー行がトリガーとなって次のページをロードします。
 				</p>
 
-				{status === "pending" ? (
-					<div className="flex justify-center items-center h-64">
-						<div className="w-8 h-8 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
-					</div>
-				) : status === "error" ? (
-					<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-						<span>エラー: {error.message}</span>
-					</div>
-				) : (
-					<div
-						ref={parentRef}
-						className="h-[calc(100vh-250px)] overflow-auto border border-gray-200 rounded-lg shadow-md bg-white"
-					>
-						<div
-							style={{
-								height: `${rowVirtualizer.getTotalSize()}px`,
-								width: "100%",
-								position: "relative",
-							}}
-						>
-							{virtualItems.map((virtualRow) => {
-								const isLoaderRow = virtualRow.index > allRows.length - 1;
-								const post = allRows[virtualRow.index];
-
-								return (
-									<div
-										key={virtualRow.index}
-										style={{
-											position: "absolute",
-											top: 0,
-											left: 0,
-											width: "100%",
-											height: `${virtualRow.size}px`,
-											transform: `translateY(${virtualRow.start}px)`,
-										}}
-										className="px-4"
-									>
-										{isLoaderRow ? (
-											<div className="flex justify-center items-center h-full">
-												{hasNextPage ? (
-													<div className="flex items-center">
-														<div className="w-4 h-4 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
-														<span className="text-gray-500 ml-2">
-															読み込み中
-														</span>
-													</div>
-												) : (
-													<span className="text-gray-400">
-														これ以上項目はありません
-													</span>
-												)}
-											</div>
-										) : (
-											<div className="py-4 px-6 border-b border-gray-100 hover:bg-gray-50 transition-colors">
-												<div className="font-medium text-gray-800">{post}</div>
-											</div>
-										)}
-									</div>
-								);
-							})}
+				<div className="h-[calc(100vh-250px)] border border-gray-200 rounded-lg shadow-md bg-white">
+					{status === "pending" ? (
+						<div className="w-full h-full flex justify-center items-center">
+							<div className="w-8 h-8 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
 						</div>
-					</div>
-				)}
+					) : status === "error" ? (
+						<div className="w-full h-full flex items-center justify-center">
+							<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded max-w-md">
+								<span>エラー: {error.message}</span>
+							</div>
+						</div>
+					) : (
+						<div ref={parentRef} className="w-full h-full overflow-auto">
+							<div
+								style={{
+									height: `${rowVirtualizer.getTotalSize()}px`,
+									width: "100%",
+									position: "relative",
+								}}
+							>
+								{virtualItems.map((virtualRow) => {
+									const isLoaderRow = virtualRow.index > allRows.length - 1;
+									const post = allRows[virtualRow.index];
 
-				{isFetching && !isFetchingNextPage && (
-					<div className="mt-4 text-sm text-indigo-500 flex items-center">
-						<div className="w-3 h-3 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
-						<span className="ml-2">バックグラウンドで更新中</span>
-					</div>
-				)}
+									return (
+										<div
+											key={virtualRow.index}
+											style={{
+												position: "absolute",
+												top: 0,
+												left: 0,
+												width: "100%",
+												height: `${virtualRow.size}px`,
+												transform: `translateY(${virtualRow.start}px)`,
+											}}
+											className="px-4"
+										>
+											{isLoaderRow ? (
+												<div className="flex justify-center items-center h-full">
+													{hasNextPage ? (
+														<div className="flex items-center">
+															<div className="w-4 h-4 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
+															<span className="text-gray-500 ml-2">
+																読み込み中
+															</span>
+														</div>
+													) : (
+														<span className="text-gray-400">
+															これ以上項目はありません
+														</span>
+													)}
+												</div>
+											) : (
+												<div className="py-4 px-6 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+													<div className="font-medium text-gray-800">
+														{post}
+													</div>
+												</div>
+											)}
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					)}
+
+					{isFetching && !isFetchingNextPage && (
+						<div className="mt-4 text-sm text-indigo-500 flex items-center">
+							<div className="w-3 h-3 border-2 border-indigo-500 rounded-full border-t-transparent animate-spin" />
+							<span className="ml-2">バックグラウンドで更新中</span>
+						</div>
+					)}
+				</div>
 			</div>
 		</div>
 	);
