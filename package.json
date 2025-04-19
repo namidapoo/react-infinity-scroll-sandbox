@@ -14,8 +14,12 @@
 		"check": "bunx biome check --write ./"
 	},
 	"dependencies": {
+		"@tailwindcss/vite": "^4.1.4",
+		"@tanstack/react-query": "^5.74.4",
+		"@tanstack/react-virtual": "^3.13.6",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"tailwindcss": "^4.1.4"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
